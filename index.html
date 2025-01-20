@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .control-panel {
+            text-align: center;
+            border: 2px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-stop {
+            background-color: red;
+        }
+        .btn-row {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <h1>Robot Control Panel</h1>
+        <div class="btn-row">
+            <button class="btn" onclick="controlRobot('f')">Forward</button>
+        </div>
+        <div class="btn-row">
+            <button class="btn" onclick="controlRobot('b')">Backward</button>
+        </div>
+        <div class="btn-row">
+            <button class="btn" onclick="controlRobot('l')">Left</button>
+            <button class="btn" onclick="controlRobot('r')">Right</button>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-stop" onclick="controlRobot('s')">Stop</button>
+        </div>
+        <br>
+        <h2>Current Direction:</h2>
+        <p id="current-direction">Waiting for input...</p>
+    </div>
+
+    <script>
+        function controlRobot(direction) {
+            // Send direction to PHP server using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "update_direction.php?direction=" + direction, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Update the current direction displayed on the front end
+                    document.getElementById("current-direction").innerText = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
